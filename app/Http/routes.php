@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('confirm', 'WeixinController@confirm');
+Route::any('confirm', 'WeixinController@confirm');
 
 Route::get('test', 'WeixinController@test');
 /*
