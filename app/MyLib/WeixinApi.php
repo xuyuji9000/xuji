@@ -1,9 +1,14 @@
 <?php
 
-namespace App\MyLib
+namespace App\MyLib;
+
+use App\MyLib\RedisFun;
 
 class WeixinApi 
 {
+    private $_access_token_key = '_rd_acc_token';
+    private $due_time = 7000;
+
     /*
      * desc:    获取access_token
      * author:  xuyuji9000@163.com
@@ -15,6 +20,15 @@ class WeixinApi
         $par['appid'] = 'wx2ed90fa37503aa8a';
         $par['secret'] = 'cf184a14ce775bbcf2797c018fe4adbd';
         
+        // 先检查有没有缓存, 没有缓存调用接口
+        $access_token = RedisFun::getStrValue($this->_access_token_key);
+        if(empty($access_token)){
+            $data = $this->sub_curl($url, $par, 0);
+            $data = json_decode($data, true);
+            $access_token = $data['access_token'];
+            RedisFun::setStrValue($this->_access_token_key, $access_token, $due_time);
+        }
+        return $access_token;
     }
 
     /* desc:    请求url获取数据
@@ -30,7 +44,7 @@ class WeixinApi
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, $is_post);
         if($is_post) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $datacube);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);

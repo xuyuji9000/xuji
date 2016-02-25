@@ -8,13 +8,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\MyLib\WeixinApi;
 
 define("TOKEN", "xujijiguangxuxuewen123");
 
 class WeixinController extends Controller
 {
     public function test() {
-        phpinfo();
+        $WeixinApi = new WeixinApi();
+        $access_token = $WeixinApi-> getAccessToken();
+        return $access_token;
     }
     public function confirm() {
         if (isset($_GET['echostr'])) {
