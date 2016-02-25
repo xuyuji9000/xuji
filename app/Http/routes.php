@@ -21,6 +21,7 @@ Route::any('confirm', 'WeixinController@confirm');
 Route::get('test', 'WeixinController@test');
 
 // Blade
+Route::get('blade/test', 'BladeController@test');
 Route::get('blade', 'BladeController@index');
 /*
 |--------------------------------------------------------------------------
