@@ -15,9 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Weixin
 Route::any('confirm', 'WeixinController@confirm');
 
 Route::get('test', 'WeixinController@test');
+
+// Blade
+Route::get('blade', 'BladeController@index');
 /*
 |--------------------------------------------------------------------------
 | Application Routes
