@@ -15,10 +15,13 @@ define("TOKEN", "xujijiguangxuxuewen123");
 class WeixinController extends Controller
 {
     public function test() {
-        $WeixinApi = new WeixinApi();
-        $access_token = $WeixinApi-> getAccessToken();
-        return $access_token;
+        return view('weixin.test');
     }
+
+    /* desc:    接收微信访问信息,并响应
+     * author:  xuyuji9000@163.com
+     * etime:   Fri Feb 26 14:07:45 CST 2016
+     */
     public function confirm() {
         if (isset($_GET['echostr'])) {
             $this->valid();
@@ -26,6 +29,10 @@ class WeixinController extends Controller
         $this->responseMsg();
     }
 
+    /* desc:    检验有效性
+     * author:  xuyuji9000@163.com
+     * etime:   Fri Feb 26 14:07:45 CST 2016
+     */
 	public function valid()
     {
         $echoStr = $_GET["echostr"];
@@ -63,6 +70,10 @@ class WeixinController extends Controller
 		}
 	}
 
+    /* desc:    微信响应
+     * author:  xuyuji9000@163.com
+     * etime:   Fri Feb 26 14:07:45 CST 2016
+     */
     public function responseMsg()
     {
 		//get post data, May be due to the different environments

@@ -27,4 +27,13 @@ class RedisFun extends Redis {
         $value = Redis::get($key);
         return $value;
     }
+
+
+    /* desc:    删除key缓存
+     * author:  xuyuji9000@163.com
+     * ctime:   Mon Mar  7 13:51:45 CST 2016
+     */
+    public static function deleteStrValue($key) {
+        Redis::del($key);
+    }
 }

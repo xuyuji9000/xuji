@@ -26,7 +26,7 @@ class WeixinApi
             $data = $this->sub_curl($url, $par, 0);
             $data = json_decode($data, true);
             $access_token = $data['access_token'];
-            RedisFun::setStrValue($this->_access_token_key, $access_token, $due_time);
+            RedisFun::setStrValue($this->_access_token_key, $access_token, $this->due_time);
         }
         return $access_token;
     }

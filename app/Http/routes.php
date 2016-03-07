@@ -23,6 +23,11 @@ Route::get('test', 'WeixinController@test');
 // Blade
 Route::get('blade/test', 'BladeController@test');
 Route::get('blade', 'BladeController@index');
+
+// WeixinAuth
+Route::get('weixinauth/test', 'WeixinAuthController@test');
+Route::get('weixinauth', 'WeixinAuthController@getAccesstoken');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
