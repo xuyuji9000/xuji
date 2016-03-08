@@ -6,27 +6,25 @@ use App\MyLib\RedisFun;
 
 class WeixinApi 
 {
-    private $_access_token_key = '_rd_acc_token';
-    private $due_time = 7000;
-
     /*
      * desc:    获取access_token
      * author:  xuyuji9000@163.com
      * ctime:   Thu Feb 25 15:04:30 CST 2016
      */
-    public function getAccessToken() {
+    public static function getAccessToken() {
+        $access_token_key = '_rd_acc_token';
         $url="https://api.weixin.qq.com/cgi-bin/token";
         $par['grant_type'] = 'client_credential';
-        $par['appid'] = 'wx2ed90fa37503aa8a';
-        $par['secret'] = 'cf184a14ce775bbcf2797c018fe4adbd';
+        $par['appid'] = $_ENV['WEIXIN_APPID'];
+        $par['secret'] = $_ENV['WEIXIN_SECRET'];
         
         // 先检查有没有缓存, 没有缓存调用接口
-        $access_token = RedisFun::getStrValue($this->_access_token_key);
+        $access_token = RedisFun::getStrValue($access_token_key);
         if(empty($access_token)){
-            $data = $this->sub_curl($url, $par, 0);
+            $data = self::sub_curl($url, $par, 0);
             $data = json_decode($data, true);
             $access_token = $data['access_token'];
-            RedisFun::setStrValue($this->_access_token_key, $access_token, $this->due_time);
+            RedisFun::setStrValue($access_token_key, $access_token, $data['expires_in'] - 1200);
         }
         return $access_token;
     }
@@ -35,7 +33,7 @@ class WeixinApi
      * author:  xuyuji9000@163.com
      * ctime:   Thu Feb 25 15:48:42 CST 2016
      */
-    private function sub_curl($url, $data, $is_post=1) {
+    public static function sub_curl($url, $data, $is_post=1) {
         $ch = curl_init();
         if(!$is_post)//get 请求
         {
@@ -53,5 +51,40 @@ class WeixinApi
         $info = curl_exec($ch);
         curl_close($ch);
         return $info;
+    }
+
+    public function createNonceStr($length = 16) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
+    }
+
+    public function getJsapiTicket() {
+        $jsapi_ticket_key = '_rd_jsapi_ticket';
+        $url="https://api.weixin.qq.com/cgi-bin/ticket/getticket";
+        $par['access_token'] = WeixinApi::getAccessToken();
+        $par['type'] = 'jsapi';
+        $jsapi_ticket = RedisFun::getStrValue($jsapi_ticket_key);
+        if(empty($jsapi_ticket)){
+            $data = self::sub_curl($url, $par, 0);
+            $data = json_decode($data, true);
+            $access_token = $data['ticket'];
+            RedisFun::setStrValue($jsapi_ticket_key, $access_token, $data['expires_in'] - 1200);
+        }
+        return $jsapi_ticket;
+    }
+
+    public function getSignature($url) {
+        if(empty($url))
+            return false;
+        $par['jsapi_ticket'] = $this->getJsapiTicket();
+        $par['nonceStr'] = $this->createNonceStr();
+        $par['timestamp'] = time();
+        $par['url'] = $url;
+        return sha1(http_build_query($par));
+
     }
 }

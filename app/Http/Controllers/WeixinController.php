@@ -15,7 +15,25 @@ define("TOKEN", "xujijiguangxuxuewen123");
 class WeixinController extends Controller
 {
     public function test() {
-        return view('weixin.test');
+        $obj = new WeixinApi();
+        $data = $obj->sub_curl('xuji.yogiman.cn/weixin/getimp',['url'=>'xuji.yogiman.cn/weixin/test'], false);
+        echo $data;
+        //return view('weixin.test');
+    }
+
+    /* desc:    获得重要的数据
+     * author:  xuyuji9000@163.com
+     * ctime:   Tue Mar  8 14:36:41 CST 2016
+     */
+    public function getImpData() {
+        $url = $_POST['url'];
+        if(empty($url))
+            return false;
+        $obj = new WeixinApi();
+        $data['nonceStr'] = $obj->createNonceStr();
+        $data['appid'] = $_ENV['WEIXIN_APPID'];
+        $data['signature'] = $obj->getSignature($url);
+        return json_encode($data);
     }
 
     /* desc:    接收微信访问信息,并响应

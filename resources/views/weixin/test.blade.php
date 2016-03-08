@@ -1,6 +1,8 @@
-@extends('app')
+@extends('layouts.weixinfront')
+
+@section('title', 'Weixin Test')
 
 @section('content')
 <h1>Test js</h1>
-<script style='text/javascript' src="{{ URL::asset('js/test.js') }}"></script>
-@stop
+@endsection
+
