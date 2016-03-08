@@ -6,6 +6,8 @@ use App\MyLib\RedisFun;
 
 class WeixinApi 
 {
+    public $noncestr;
+    public $timestamp;
     /*
      * desc:    获取access_token
      * author:  xuyuji9000@163.com
@@ -71,8 +73,8 @@ class WeixinApi
         if(empty($jsapi_ticket)){
             $data = self::sub_curl($url, $par, 0);
             $data = json_decode($data, true);
-            $access_token = $data['ticket'];
-            RedisFun::setStrValue($jsapi_ticket_key, $access_token, $data['expires_in'] - 1200);
+            $jsapi_ticket = $data['ticket'];
+            RedisFun::setStrValue($jsapi_ticket_key, $jsapi_ticket, $data['expires_in'] - 1200);
         }
         return $jsapi_ticket;
     }
@@ -81,10 +83,12 @@ class WeixinApi
         if(empty($url))
             return false;
         $par['jsapi_ticket'] = $this->getJsapiTicket();
-        $par['nonceStr'] = $this->createNonceStr();
+        $par['noncestr'] = $this->createNonceStr();
         $par['timestamp'] = time();
         $par['url'] = $url;
-        return sha1(http_build_query($par));
-
+        $this->noncestr = $par['noncestr'];
+        $this->timestamp = $par['timestamp'];
+        $str = "jsapi_ticket=".$par['jsapi_ticket']."&noncestr=".$par['noncestr']."&timestamp=".$par['timestamp']."&url=".$par['url'];
+        return sha1($str);
     }
 }

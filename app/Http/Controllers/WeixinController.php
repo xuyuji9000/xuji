@@ -15,10 +15,9 @@ define("TOKEN", "xujijiguangxuxuewen123");
 class WeixinController extends Controller
 {
     public function test() {
-        $obj = new WeixinApi();
-        $data = $obj->sub_curl('xuji.yogiman.cn/weixin/getimp',['url'=>'xuji.yogiman.cn/weixin/test'], false);
-        echo $data;
-        //return view('weixin.test');
+        //$obj = new WeixinApi();
+        //dd($obj->getSignature("http://xuji.yogiman.cn/weixin/test"));
+        return view('weixin.test');
     }
 
     /* desc:    获得重要的数据
@@ -30,9 +29,10 @@ class WeixinController extends Controller
         if(empty($url))
             return false;
         $obj = new WeixinApi();
-        $data['nonceStr'] = $obj->createNonceStr();
-        $data['appid'] = $_ENV['WEIXIN_APPID'];
         $data['signature'] = $obj->getSignature($url);
+        $data['nonceStr'] = $obj->noncestr;
+        $data['timestamp'] = $obj->timestamp;
+        $data['appid'] = $_ENV['WEIXIN_APPID'];
         return json_encode($data);
     }
 

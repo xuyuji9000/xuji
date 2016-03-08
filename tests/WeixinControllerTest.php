@@ -23,7 +23,7 @@ class WeixinControllerTest extends TestCase
         $data = $obj->sub_curl('xuji.yogiman.cn/weixin/getimp',['url'=>'xuji.yogiman.cn/weixin/test']);
         $data = json_decode($data);
         $flag = true;
-        foreach(['nonceStr', 'appid', 'signature'] as $key) {
+        foreach(['nonceStr', 'appid', 'signature', 'timestamp'] as $key) {
             if(!array_key_exists($key, $data)){
                 $flag = false;
             }
