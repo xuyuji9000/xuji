@@ -108,6 +108,10 @@ class WeixinController extends Controller
                 case "text":
                     $result = $this->receiveText($postObj);
                     break;
+                case "event":
+                    if("LOCATION"==$postObj->Event)
+                        $result = $this->receiveLocation($postObj);
+                    break;
             }
             echo $result;
         }else {
@@ -145,4 +149,36 @@ class WeixinController extends Controller
             return $resultStr;
         }
     }
+
+    // 用户位置响应
+    private function receiveLocation($postObj) {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        $keyword = trim($postObj->Content);
+        $time = time();
+        $textTpl = "<xml>
+                    <ToUserName><![CDATA[%s]]></ToUserName>
+                    <FromUserName><![CDATA[%s]]></FromUserName>
+                    <CreateTime>%s</CreateTime>
+                    <MsgType><![CDATA[%s]]></MsgType>
+                    <ArticleCount>1</ArticleCount>
+                    <Articles>
+                    <item>
+                    <Title><![CDATA[%s]]></Title>
+                    <Description><![CDATA[%s]]></Description>
+                    <Url><![CDATA[%s]]></Url>
+                    </item>
+                    </Articles>
+                    </xml>";             
+        $msgType = "news";
+        $itemTitle = "徐记激光焊导航";
+        $itemDesc = " ";
+        $url = "http://xuji.yogiman.cn/baidu/local";
+        $data = array("Latitude"=>$postObj->Latitude, "Longitude"=>$postObj->Longitude);
+        $url = $url."?".http_build_query($data);
+        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $itemTitle, $itemDesc, $url);
+        return $resultStr;
+        
+    }
+
 }

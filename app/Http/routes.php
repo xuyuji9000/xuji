@@ -21,6 +21,9 @@ Route::any('confirm', 'WeixinController@confirm');
 Route::get('weixin/test', 'WeixinController@test');
 Route::post('weixin/getimp', 'WeixinController@getImpData');
 
+// Baidu
+Route::get('baidu/local', 'BaiduController@local');
+
 // Blade
 Route::get('blade/test', 'BladeController@test');
 Route::get('blade', 'BladeController@index');
