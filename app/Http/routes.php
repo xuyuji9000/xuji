@@ -1,4 +1,5 @@
 <?php
+use Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,20 @@ Route::get('baidu/local', 'BaiduController@local');
 Route::get('blade/test', 'BladeController@test');
 Route::get('blade', 'BladeController@index');
 
+// Function
+Route::get('function/upload', 'FunctionController@upload');
+Route::post('function/uploadImg', 'FunctionController@uploadImg');
+Route::get('function/test', function(){
+    //$files = Storage::allFiles("");
+    //$files = Storage::get("images/test.jpg");
+    $files =  asset("test.jpg");
+    echo "<img src='".$files."'>";
+});
+
+// images
+Route::get("img/{path}", function(League\Glide\Server $server, $path){
+	$server->outputImage( $path, $_GET);
+});
 
 /*
 |--------------------------------------------------------------------------
