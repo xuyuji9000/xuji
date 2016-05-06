@@ -1,5 +1,4 @@
 <?php
-use Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,6 +10,8 @@ use Storage;
 | and give it the controller to call when that URI is requested.
 |
 */
+
+// use Storage;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,11 +33,20 @@ Route::get('blade', 'BladeController@index');
 // Function
 Route::get('function/upload', 'FunctionController@upload');
 Route::post('function/uploadImg', 'FunctionController@uploadImg');
+Route::post('function/submit', 'FunctionController@submit');
 Route::get('function/test', function(){
-    //$files = Storage::allFiles("");
-    //$files = Storage::get("images/test.jpg");
-    $files =  asset("test.jpg");
-    echo "<img src='".$files."'>";
+
+    $files =  asset("routes-msq_ky.png");
+    // echo $files;
+    echo "<img src=\"".$files."\">";
+    // phpinfo();
+    // echo public_path();
+    // $file = Storage::get('images/test.jpg'); 
+    // return response($file, 200)->header('Content-Type', 'image/jpeg');
+    // echo asset("images/test.jpg");
+    // echo env("IMAGE_PATH");
+    echo DIRECTORY_SEPARATOR ;
+
 });
 
 // images
