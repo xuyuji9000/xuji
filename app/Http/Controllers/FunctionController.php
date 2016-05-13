@@ -8,13 +8,30 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Storage;
+
+use URL;
+
 use App\Picture;
+use App\MyLib\WeixinApi;
 
 class FunctionController extends Controller
 {
     public function upload(Request $request) {
-        $data = array();
-        return view("function.upload", $data);
+      // $pic = Picture::find(7);
+
+      // $wx = new WeixinApi();
+      // $info = $wx->wxCardUpdateImg();
+      // var_dump($info);
+      
+      // $url = $pic->get_img_url();
+      // echo "<img src=\"".$info."\">";
+      // $token = WeixinApi::getAccessToken();
+      // echo $token ;
+      // echo $pic->get_img_local();
+      // var_dump($info);
+
+      $data = array();
+      return view("function.upload", $data);
     }
 
     public function uploadImg(Request $request) {
@@ -43,6 +60,20 @@ class FunctionController extends Controller
       //$result = $request->file('imgfile')->move("", $request->file("imgfile")->getRealPath()));
       // echo $result;
       echo public_path();
+    }
+
+    public function test(Request $request){
+      echo URL::to('/');
+      // $files =  asset("routes-msq_ky.png");
+      // echo $files;
+      // echo "<img src=\"".$files."\">";
+      // phpinfo();
+      // echo public_path();
+      // $file = Storage::get('images/test.jpg'); 
+      // return response($file, 200)->header('Content-Type', 'image/jpeg');
+      // echo asset("images/test.jpg");
+      // echo env("IMAGE_PATH");
+      // echo DIRECTORY_SEPARATOR ;
     }
 
 }

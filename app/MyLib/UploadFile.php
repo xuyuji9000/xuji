@@ -99,7 +99,7 @@ class UploadFile
 		else
 		{
 			$return_info['result']=1;
-			$return_info["img_url"] = str_replace(public_path().$this->pic_base_url,'',$df);
+			$return_info["img_url"] = str_replace(public_path().'/'.$this->pic_base_url,'',$df);
 		}
 		return $return_info;
 	}

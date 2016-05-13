@@ -8,6 +8,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\MyLib\UploadFile;
+use URL;
 
 class Picture extends Model
 {
@@ -33,5 +34,23 @@ class Picture extends Model
 		$upload->destroy();
 		$id=$this->save();
 		return $this->id?$this->id:false;
+    }
+
+    private function get_img_base_path()
+    {
+    	return '/'.env("IMAGE_PATH");
+    }
+
+    /**
+	 *	获取图片链接
+	 *	返回值: 字符串 图片链接 "http://xuji.yogiman.cn/../../../test.jpg"
+	 */
+    public function get_img_url($org_path='') {
+    	$org_path = $org_path?$org_path:$this->org;
+    	return URL::to('/').$this->get_img_base_path().$org_path;
+    }
+
+    public function get_img_local(){
+    	return public_path().'/'.env("IMAGE_PATH").$this->org;
     }
 }

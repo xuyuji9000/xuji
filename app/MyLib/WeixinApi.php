@@ -3,6 +3,7 @@
 namespace App\MyLib;
 
 use App\MyLib\RedisFun;
+use App\Picture;
 
 class WeixinApi 
 {
@@ -13,8 +14,7 @@ class WeixinApi
      * author:  xuyuji9000@163.com
      * ctime:   Thu Feb 25 15:04:30 CST 2016
      */
-    public static function getAccessToken() {
-        $access_token_key = '_rd_acc_token';
+    public static function getAccessToken() {        $access_token_key = '_rd_acc_token';
         $url="https://api.weixin.qq.com/cgi-bin/token";
         $par['grant_type'] = 'client_credential';
         $par['appid'] = $_ENV['WEIXIN_APPID'];
@@ -51,6 +51,11 @@ class WeixinApi
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $info = curl_exec($ch);
+
+        if (!curl_errno($ch)) {
+            print_r(curl_getinfo($ch, CURLINFO_HEADER_OUT));
+        }
+
         curl_close($ch);
         return $info;
     }
@@ -90,5 +95,29 @@ class WeixinApi
         $this->timestamp = $par['timestamp'];
         $str = "jsapi_ticket=".$par['jsapi_ticket']."&noncestr=".$par['noncestr']."&timestamp=".$par['timestamp']."&url=".$par['url'];
         return sha1($str);
+    }
+
+    // 获取微信card logo图片链接
+    public function wxCardUpdateImg() {
+        $access_token = $this->getAccessToken();
+        // $data['buffer']   = "@/home/yogi/Workspace/xuji/public/images/org/8/03/656/5d32/5eb706ab85516cc9def8e8.jpg";
+        $url = 'http://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token='.$access_token;
+
+        // $result = $this->sub_curl($url, $data);
+
+        exec("curl -F buffer=@/home/yogi/Workspace/xuji/public/images/org/8/03/656/5d32/5eb706ab85516cc9def8e8.jpg ".$url, $json_info);
+        $json_info = json_decode($json_info[0]);
+        $json_info = json_decode(json_encode($json_info), true);
+
+        if($json_info['url'])
+        {
+            $url = stripslashes($json_info['url']);
+            $PictureMod = new Picture();
+            $PictureMod->org = $url;
+            $PictureMod->save();
+        }
+        
+        $id = $PictureMod->id?$PictureMod->id:false;
+        return $id;
     }
 }

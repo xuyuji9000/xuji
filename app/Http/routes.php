@@ -34,20 +34,12 @@ Route::get('blade', 'BladeController@index');
 Route::get('function/upload', 'FunctionController@upload');
 Route::post('function/uploadImg', 'FunctionController@uploadImg');
 Route::post('function/submit', 'FunctionController@submit');
-Route::get('function/test', function(){
+Route::get('function/test', 'FunctionController@test');
 
-    $files =  asset("routes-msq_ky.png");
-    // echo $files;
-    echo "<img src=\"".$files."\">";
-    // phpinfo();
-    // echo public_path();
-    // $file = Storage::get('images/test.jpg'); 
-    // return response($file, 200)->header('Content-Type', 'image/jpeg');
-    // echo asset("images/test.jpg");
-    // echo env("IMAGE_PATH");
-    echo DIRECTORY_SEPARATOR ;
+// 测试
+Route::get("test", "TestController@index");
 
-});
+
 
 // images
 Route::get("img/{path}", function(League\Glide\Server $server, $path){
