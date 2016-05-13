@@ -81,4 +81,8 @@ echo '解密：'.$this->encrypt($token, 'D', 'a');
             return str_replace('=','',base64_encode($result));
         }
     }
+
+    public function log() {
+        abort(404);
+    }
 }

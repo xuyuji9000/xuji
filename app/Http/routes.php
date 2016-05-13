@@ -38,6 +38,7 @@ Route::get('function/test', 'FunctionController@test');
 
 // 测试
 Route::get("test", "TestController@index");
+Route::get("test/log", "TestController@log");
 
 
 
