@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\MyLib\WeixinApi;
+use App\Fan;
 
 define("TOKEN", "xujijiguangxuxuewen123");
 
@@ -103,6 +104,7 @@ class WeixinController extends Controller
                the best way is to check the validity of xml by yourself */
             libxml_disable_entity_loader(true);
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $this->addNewFans($postObj->FromUserName);
             $msg_type = trim($postObj->MsgType); // 事件、文本、图片、视频、语音、位置、链接
             switch($msg_type) {
                 case "text":
@@ -182,4 +184,16 @@ class WeixinController extends Controller
         
     }
 
+    /**
+     * 添加新粉丝
+     * @param string $FromUserName 粉丝openid
+     */
+    private function addNewFans($FromUserName)
+    {
+        $fanMod = new Fan();
+        $fanMod->openid = $FromUserName;
+        $result = $fanMod->save();
+        if(!$result)
+            Log::info("添加粉丝失败.");
+    }
 }
