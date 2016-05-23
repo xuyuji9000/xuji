@@ -9,12 +9,14 @@ class WeixinApi
 {
     public $noncestr;
     public $timestamp;
+    private $base_url = "https://api.weixin.qq.com/cgi-bin/";
     /*
      * desc:    获取access_token
      * author:  xuyuji9000@163.com
      * ctime:   Thu Feb 25 15:04:30 CST 2016
      */
-    public static function getAccessToken() {        $access_token_key = '_rd_acc_token';
+    public static function getAccessToken() {        
+        $access_token_key = '_rd_acc_token';
         $url="https://api.weixin.qq.com/cgi-bin/token";
         $par['grant_type'] = 'client_credential';
         $par['appid'] = $_ENV['WEIXIN_APPID'];
@@ -119,5 +121,18 @@ class WeixinApi
         
         $id = $PictureMod->id?$PictureMod->id:false;
         return $id;
+    }
+
+    /**
+     * 获取微信服务器IP地址
+     * @return array()
+     */
+    public function getWeixinServers()
+    {
+        $par['access_token'] = self::getAccessToken();
+        $url = $this->base_url."getcallbackip";
+        $data = self::sub_curl($url, $par, 0);
+        $data = json_decode($data, true);
+        return $data;
     }
 }

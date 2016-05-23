@@ -126,6 +126,7 @@ class WeixinController extends Controller
         $fromUsername = $postObj->FromUserName;
         $toUsername = $postObj->ToUserName;
         $keyword = trim($postObj->Content);
+        Log::info("{$toUsername} receive text from {$fromUsername}.");
         $time = time();
         $textTpl = "<xml>
                     <ToUserName><![CDATA[%s]]></ToUserName>

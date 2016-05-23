@@ -7,22 +7,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Log;
+use App\MyLib\WeixinApi;
 class TestController extends Controller
 {
     public function index()
     {
-    	$id = 132;
-     
-$token = $this->encrypt($id, 'E', 'a');
-
-// echo $token;
-     
-echo '加密:'.$this->encrypt($id, 'E', 'a');
-echo '<br />';
-     
-echo '解密：'.$this->encrypt($token, 'D', 'a');
-
-
+        $api = new WeixinApi();
+        var_dump(count($api->getWeixinServers()));
     }
 
     /*********************************************************************
@@ -36,6 +28,14 @@ echo '解密：'.$this->encrypt($token, 'D', 'a');
     $operation:判断是加密还是解密:E:加密   D:解密
     $key      :加密的钥匙(密匙);
     *********************************************************************/
+    /**
+     * //example code
+     * $id = 132;
+     * $token = $this->encrypt($id, 'E', 'a');
+     * echo '加密:'.$this->encrypt($id, 'E', 'a');
+     * echo '<br />';
+     * echo '解密：'.$this->encrypt($token, 'D', 'a');
+     */
     function encrypt($string,$operation,$key='')
     {
         $key=md5($key);
@@ -83,6 +83,6 @@ echo '解密：'.$this->encrypt($token, 'D', 'a');
     }
 
     public function log() {
-        abort(404);
+        Log::info('Showing user profile for user.');
     }
 }
