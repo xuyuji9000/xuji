@@ -106,6 +106,7 @@ class WeixinController extends Controller
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $this->addNewFans($postObj->FromUserName);
             $msg_type = trim($postObj->MsgType); // 事件、文本、图片、视频、语音、位置、链接
+            $result = "";
             switch($msg_type) {
                 case "text":
                     $result = $this->receiveText($postObj);
@@ -113,8 +114,32 @@ class WeixinController extends Controller
                 case "event":
                     if("LOCATION"==$postObj->Event)
                         $result = $this->receiveLocation($postObj);
+                    if("subscribe"==$postObj->Event)
+                        Log::info("{$postObj->FromUserName} subscribed!");
+                    if("unsubscribe"==$postObj->Event)
+                        Log::info("{$postObj->FromUserName} unsubscribed!");
                     break;
+                case "image":
+                    // Log::info(trim($postObj->MediaId));
+                    $result = $this->receiveImage($postObj);
+                    break;
+                case "shortvideo":
+                    // Log::info(trim($postObj->MediaId));
+                    $result = $this->receiveShortVedio($postObj);
+                    break;
+                case "video":
+                    // Log::info(trim($postObj->MediaId));
+                    $result = $this->receiveVedio($postObj);
+                    break;
+                case "link":
+                    // Log::info(trim($postObj->Url));
+                    $result = $this->receiveLink($postObj);
+                    break;
+                default:
+                    $result = $this->receiveDefault($postObj);
             }
+            // if(empty($result))
+            //     $result = '';
             echo $result;
         }else {
         	echo "";
@@ -122,6 +147,69 @@ class WeixinController extends Controller
         }
     }
 
+    /**
+     * 链接返回值
+     * @param  class $postObj 微信返回类
+     * @return string          返回字符串
+     */
+    private function receiveLink($postObj)
+    {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        Log::info("{$toUsername} receive link from {$fromUsername}.");
+
+        $contentStr = "Received Link!";
+        $resultStr = $this->formatText($postObj, $contentStr);
+        return $resultStr;
+    }
+
+    /**
+     * 视频返回值
+     * @param  class $postObj 微信返回类
+     * @return string          返回字符串
+     */
+    private function receiveVedio($postObj)
+    {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        Log::info("{$toUsername} receive vedio from {$fromUsername}.");
+
+        $contentStr = "Received Vedio!";
+        $resultStr = $this->formatText($postObj, $contentStr);
+        return $resultStr;
+    }
+
+    /**
+     * 默认返回
+     * @param  class $postObj 微信返回类
+     * @return string          返回字符串
+     */
+    private function receiveDefault($postObj)
+    {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        Log::info("{$toUsername} receive default from {$fromUsername}.");
+
+        $contentStr = "Default Response!";
+        $resultStr = $this->formatText($postObj, $contentStr);
+        return $resultStr;
+    }
+
+    /**
+     * 短视频返回值
+     * @param  class $postObj 微信返回类
+     * @return string          返回字符串
+     */
+    private function receiveShortVedio($postObj)
+    {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        Log::info("{$toUsername} receive shortvideo from {$fromUsername}.");
+
+        $contentStr = "Received shortvedio!";
+        $resultStr = $this->formatText($postObj, $contentStr);
+        return $resultStr;
+    }
 
     // 返回文字信息
     private function receiveText($postObj) {
@@ -129,6 +217,29 @@ class WeixinController extends Controller
         $toUsername = $postObj->ToUserName;
         $keyword = trim($postObj->Content);
         Log::info("{$toUsername} receive text from {$fromUsername}.");
+
+        if(!empty( $keyword ))
+        {
+            $contentStr = "Welcome to wechat world!";
+            $resultStr = $this->formatText($postObj, $contentStr);
+            return $resultStr;
+        }else{
+            $contentStr = "Welcome to wechat world!";
+            $resultStr = $this->formatText($postObj, $contentStr);
+            return $resultStr;
+        }
+    }
+
+    /**
+     * 获取文字返回值
+     * @param  class $postObj    微信返回值类
+     * @param  string $contentStr 需要返回的字符串
+     * @return string             字符串返回值
+     */
+    private function formatText($postObj, $contentStr) {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        $msgType = "text";
         $time = time();
         $textTpl = "<xml>
                     <ToUserName><![CDATA[%s]]></ToUserName>
@@ -137,20 +248,9 @@ class WeixinController extends Controller
                     <MsgType><![CDATA[%s]]></MsgType>
                     <Content><![CDATA[%s]]></Content>
                     <FuncFlag>0</FuncFlag>
-                    </xml>";             
-        if(!empty( $keyword ))
-        {
-            $msgType = "text";
-            $contentStr = "Welcome to wechat world!";
-            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-            return $resultStr;
-        }else{
-            // echo "Input something...";
-            $msgType = "text";
-            $contentStr = "Welcome to wechat world!";
-            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-            return $resultStr;
-        }
+                    </xml>"; 
+        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+        return $resultStr;
     }
 
     // 用户位置响应
@@ -185,15 +285,34 @@ class WeixinController extends Controller
     }
 
     /**
+     * 图片消息返回
+     * @param  class $postObj 微信返回值类
+     * @return string          返回字符串
+     */
+    private function receiveImage($postObj) {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        Log::info("{$toUsername} receive image from {$fromUsername}.");
+
+        $contentStr = "Received your image!";
+        $resultStr = $this->formatText($postObj, $contentStr);
+        return $resultStr;
+    }
+
+    /**
      * 添加新粉丝
      * @param string $FromUserName 粉丝openid
      */
     private function addNewFans($FromUserName)
     {
         $fanMod = new Fan();
-        $fanMod->openid = $FromUserName;
-        $result = $fanMod->save();
-        if(!$result)
-            Log::info("添加粉丝失败.");
+        if(!Fan::where('openid',$FromUserName)->first())
+        {
+            $fanMod->openid = $FromUserName;
+            $result = $fanMod->save();
+            if(!$result)
+                Log::info("添加粉丝失败.");
+        }
+            
     }
 }
