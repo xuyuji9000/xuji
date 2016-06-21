@@ -3,21 +3,24 @@
 namespace App\Http\Controllers;
 
 use Log;
+// use Redis;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\MyLib\WeixinApi;
+use App\MyLib\RedisFun;
+use App\MyLib\CacheKey;
+
 use App\Fan;
+
 
 define("TOKEN", "xujijiguangxuxuewen123");
 
 class WeixinController extends Controller
 {
     public function test() {
-        //$obj = new WeixinApi();
-        //dd($obj->getSignature("http://xuji.yogiman.cn/weixin/test"));
         return view('weixin.test');
     }
 
@@ -104,6 +107,11 @@ class WeixinController extends Controller
                the best way is to check the validity of xml by yourself */
             libxml_disable_entity_loader(true);
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            if($this->isDuplicate($postObj))    // 排重
+            {
+                echo "";
+                exit();
+            }
             $this->addNewFans($postObj->FromUserName);
             $msg_type = trim($postObj->MsgType); // 事件、文本、图片、视频、语音、位置、链接
             $result = "";
@@ -220,8 +228,14 @@ class WeixinController extends Controller
 
         if(!empty( $keyword ))
         {
-            $contentStr = "Welcome to wechat world!";
-            $resultStr = $this->formatText($postObj, $contentStr);
+            if("news" == $keyword)
+            {
+                $resultStr = $this->formatNewsDemo($postObj);
+            } else {
+                $contentStr = "Welcome to wechat world!";
+                $resultStr = $this->formatText($postObj, $contentStr);
+            }
+            
             return $resultStr;
         }else{
             $contentStr = "Welcome to wechat world!";
@@ -250,6 +264,42 @@ class WeixinController extends Controller
                     <FuncFlag>0</FuncFlag>
                     </xml>"; 
         $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+        return $resultStr;
+    }
+
+    /**
+     * 返回图文消息(demo), 
+     * @param  [type] $postObj [description]
+     * @return [type]          [description]
+     */
+    private function formatNewsDemo($postObj)
+    {
+        $fromUsername = $postObj->FromUserName;
+        $toUsername = $postObj->ToUserName;
+        $msgType = "news";
+        $time = time();
+
+        $title = "图文消息标题";
+        $description = "图文消息描述";
+        $picurl = "http://images.nationalgeographic.com/wpf/media-live/photos/000/936/cache/bear-road-denali_93621_990x742.jpg";
+        $url = "http://www.baidu.com";
+
+        $textTpl = "<xml>
+                    <ToUserName><![CDATA[%s]]></ToUserName>
+                    <FromUserName><![CDATA[%s]]></FromUserName>
+                    <CreateTime>%s</CreateTime>
+                    <MsgType><![CDATA[%s]]></MsgType>
+                    <ArticleCount>1</ArticleCount>
+                    <Articles>
+                    <item>
+                    <Title><![CDATA[%s]]></Title> 
+                    <Description><![CDATA[%s]]></Description>
+                    <PicUrl><![CDATA[%s]]></PicUrl>
+                    <Url><![CDATA[%s]]></Url>
+                    </item>
+                    </Articles>
+                    </xml>"; 
+        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $title, $description, $picurl, $url);
         return $resultStr;
     }
 
@@ -314,5 +364,31 @@ class WeixinController extends Controller
                 Log::info("添加粉丝失败.");
         }
             
+    }
+
+    /**
+     * 微信消息排重
+     * @param  class  $postObj 微信返回值类
+     * @return boolean          是否重复
+     * @createtime  2016/06/06 周一
+     */
+    private function isDuplicate($postObj) 
+    {
+        $needle = $postObj->FromUserName.$postObj->CreateTime;
+        $key = CacheKey::get_is_duplicate_key();
+        $value = RedisFun::getArrayValue($key);
+        if($value)  // 缓存存在
+        {
+            if(in_array($needle, $value))   // 在缓存中, 重复消息
+            {
+                return true;
+            } else {    // 不在缓存中, 非重复消息
+                return false;
+            }
+        } else { // 缓存不存在, 非重复消息
+            $data = array_push($value, $needle);
+            RedisFun::setArrayValue($key, $data);
+            return false;
+        }
     }
 }

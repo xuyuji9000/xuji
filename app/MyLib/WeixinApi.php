@@ -135,4 +135,47 @@ class WeixinApi
         $data = json_decode($data, true);
         return $data;
     }
+
+    /**
+     * 菜单创建
+     * @param  [string] $info [用于创建菜单的json string]
+     * @return [int]       [创建状态]
+     */
+    public function createMenu($info) {
+        $par['access_token'] = self::getAccessToken();
+        $url = $this->base_url."menu/create";
+        $url = $url."?".http_build_query($par); // 在需要使用post方法时, 将url中的参数手动添加
+
+        $data = self::sub_curl($url, $info, 1); // post方式
+        $data = json_decode($data, true);
+        return $data;
+
+    }
+
+    /**
+     * 菜单查询
+     */
+    public function getMenu()
+    {
+        $par['access_token'] = self::getAccessToken();
+        $url = $this->base_url."menu/get";
+
+        $data = self::sub_curl($url, $par, 0);
+        $data = json_decode($data, true);
+        return $data;
+    }
+    
+    /**
+     * 菜单删除
+     */
+    public function deleteMenu($value='')
+    {
+        $par['access_token'] = self::getAccessToken();
+        $url = $this->base_url."menu/delete";
+
+        $data = self::sub_curl($url, $par, 0);
+        $data = json_decode($data, true);
+        return $data;
+    }
+    
 }

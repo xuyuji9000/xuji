@@ -61,3 +61,9 @@ Route::get("img/{path}", function(League\Glide\Server $server, $path){
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/home', 'HomeController@index');
+});
