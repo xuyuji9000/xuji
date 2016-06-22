@@ -13,14 +13,12 @@
 
 // use Storage;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 // Weixin
 Route::any('confirm', 'WeixinController@confirm');
 
 Route::get('weixin/test', 'WeixinController@test');
+Route::get('weixin/test2', 'WeixinController@test2');
 Route::post('weixin/getimp', 'WeixinController@getImpData');
 
 // Baidu
@@ -36,9 +34,13 @@ Route::post('function/uploadImg', 'FunctionController@uploadImg');
 Route::post('function/submit', 'FunctionController@submit');
 Route::get('function/test', 'FunctionController@test');
 
-// 测试
+// ******Demo******
 Route::get("test", "TestController@index");
 Route::get("test/log", "TestController@log");
+// 微信授权Demo
+Route::get("test/getcode", "TestController@getcode");
+Route::get("test/getdetail", "TestController@getdetail");
+
 
 
 
@@ -66,4 +68,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
     Route::get('/home', 'HomeController@index');
+    Route::get('/', function () {
+        return view('welcome');
+    });
 });

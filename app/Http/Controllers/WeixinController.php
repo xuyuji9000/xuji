@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\MyLib\WeixinApi;
 use App\MyLib\RedisFun;
 use App\MyLib\CacheKey;
+use App\MyLib\WeixinAuth;
 
 use App\Fan;
 
@@ -20,7 +21,24 @@ define("TOKEN", "xujijiguangxuxuewen123");
 
 class WeixinController extends Controller
 {
-    public function test() {
+    //public function __construct() {
+    //    $this->middleware('web');    
+    //}
+
+    public function test(Request $request) {
+        $url = WeixinAuth::getAuthUrl('http://xuji.yogiman.cn/weixin/test2', 'snsapi_userinfo');
+        echo($url);
+        exit();
+    }
+
+    public function test2()
+    {
+        if($_GET['code']) 
+        {
+            $data = WeixinAuth::getOpenid($_GET['code']);
+            $info = WeixinAuth::getDetailInfo($data);
+            var_dump($info);
+        }
         return view('weixin.test');
     }
 

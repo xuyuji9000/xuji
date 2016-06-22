@@ -10,6 +10,7 @@ class WeixinApi
     public $noncestr;
     public $timestamp;
     private $base_url = "https://api.weixin.qq.com/cgi-bin/";
+    private $auth_url = "https://api.weixin.qq.com/sns/oauth2/access_token";
     /*
      * desc:    获取access_token
      * author:  xuyuji9000@163.com
@@ -177,5 +178,15 @@ class WeixinApi
         $data = json_decode($data, true);
         return $data;
     }
+
+    // 通过授权url获取code
+    public function getAuthCode() {
+        
+    }
+    
+    // 通过code获取auth_access_token && openid
+
+    // 通过refresh_token刷新auth_access_token
+    
     
 }

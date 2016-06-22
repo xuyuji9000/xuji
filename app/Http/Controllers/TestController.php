@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use Log;
 use App\MyLib\WeixinApi;
+use App\MyLib\WeixinAuth;
+
 class TestController extends Controller
 {
     public function index()
@@ -84,5 +86,26 @@ class TestController extends Controller
 
     public function log() {
         Log::info('Showing user profile for user.');
+    }
+
+    // ******微信网页授权Demo******
+    // 获取code
+    public function getcode(Request $request) {
+        $url = WeixinAuth::getAuthUrl('http://xuji.yogiman.cn/test/getdetail', 'snsapi_userinfo');
+        echo($url);
+        exit();
+    }
+
+    // 获取详细信息
+    public function getdetail()
+    {
+        if($_GET['code']) 
+        {
+            $data = WeixinAuth::getOpenid($_GET['code']);
+            $info = WeixinAuth::getDetailInfo($data);
+            var_dump($info);
+        } else {
+            echo false;
+        }
     }
 }
