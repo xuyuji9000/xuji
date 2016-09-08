@@ -92,6 +92,7 @@ class TestController extends Controller
     // 获取code
     public function getcode(Request $request) {
         $url = WeixinAuth::getAuthUrl('http://xuji.yogiman.cn/test/getdetail', 'snsapi_userinfo');
+        header("Location:".$url);
         echo($url);
         exit();
     }
