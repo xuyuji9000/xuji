@@ -344,6 +344,7 @@ class WeixinController extends Controller
         $msgType = "news";
         $itemTitle = "徐记激光焊导航";
         $itemDesc = " ";
+        Log::info("{$toUsername} receive Location from {$fromUsername}.");
         $url = "http://xuji.yogiman.cn/baidu/local";
         $data = array("Latitude"=>$postObj->Latitude, "Longitude"=>$postObj->Longitude);
         $url = $url."?".http_build_query($data);
