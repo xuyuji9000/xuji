@@ -27,7 +27,7 @@ class WeixinController extends Controller
 
     public function test(Request $request) {
         $url = WeixinAuth::getAuthUrl('http://xuji.yogiman.cn/weixin/test2', 'snsapi_userinfo');
-        echo($url);
+        header("Location:".$url);
         exit();
     }
 
