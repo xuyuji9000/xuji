@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>payment</title>
+	<script type="text/javascript" src="{!! asset('js/jquery.js') !!}"></script>
 	<script type="text/javascript" src="{!! asset('js/jweixin.js') !!}"></script>
 	<!-- <script type="text/javascript" src="js/jweixin.js"></script> -->
 	<!-- <script type="text/javascript" src="js/wx.js"></script> -->
