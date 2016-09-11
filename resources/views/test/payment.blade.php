@@ -2,8 +2,10 @@
 <html>
 <head>
 	<title>payment</title>
-	<script type="text/javascript" src="js/jweixin.js"></script>
-	<script type="text/javascript" src="js/wx.js"></script>
+	<script type="text/javascript" src="{!! asset('js/jweixin.js') !!}"></script>
+	<!-- <script type="text/javascript" src="js/jweixin.js"></script> -->
+	<!-- <script type="text/javascript" src="js/wx.js"></script> -->
+	<script type="text/javascript" src="{!! asset('js/wx.js') !!}"></script>
 </head>
 <script type="text/javascript">
 wx.checkJsApi({
