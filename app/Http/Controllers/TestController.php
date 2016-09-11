@@ -109,4 +109,20 @@ class TestController extends Controller
             echo false;
         }
     }
+
+    /**
+     * check sdk 
+     */
+    public function sdk()
+    {
+        
+    }
+
+    /**
+     * payment demo
+     */
+    public function payment()
+    {
+        return view('test.payment');
+    }
 }

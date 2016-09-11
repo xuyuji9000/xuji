@@ -40,6 +40,9 @@ Route::get("test/log", "TestController@log");
 // 微信授权Demo
 Route::get("test/getcode", "TestController@getcode");
 Route::get("test/getdetail", "TestController@getdetail");
+// 微信jssdkDEMO
+Route::get("test/sdk", "TestController@sdk");
+Route::get("test/payment", "TestController@payment");
 
 
 
