@@ -58,6 +58,7 @@ class WeixinPay
 	{
 		$temp = array_filter($par);
 		$temp = ksort($temp);
+		var_dump($temp);
 		$temp = http_build_query($temp);
 	}
 
