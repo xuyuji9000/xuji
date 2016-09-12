@@ -45,8 +45,8 @@ class WeixinPay
 					   <product_id><![CDATA[%s]]></product_id>
 					   <sign><![CDATA[%s]]></sign>
 					</xml>"
-        $resultStr = vsprintf($payTpl, $par);
-        $result =  WeixinApi::sub_curl($this->base_url, $resultStr);
+        $result = vsprintf($payTpl, $par);
+        $result =  WeixinApi::sub_curl($this->base_url, $result);
         var_dump($result);
 	}
 
