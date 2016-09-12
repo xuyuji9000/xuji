@@ -16,6 +16,7 @@ class WeixinPay
 	 */
 	public function unifiedorder()
 	{
+		var_dump(123);
 		$par = new Array();
 		$par['appid'] = $_ENV['WEIXIN_APPID'];
 		$par['mch_id'] = $_ENV['WEIXIN_MCH_ID'];
