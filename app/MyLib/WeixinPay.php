@@ -16,7 +16,6 @@ class WeixinPay
 	 */
 	public function unifiedorder()
 	{
-		var_dump(123);
 		$par = array();
 		$par['appid'] = $_ENV['WEIXIN_APPID'];
 		$par['mch_id'] = $_ENV['WEIXIN_MCH_ID'];
@@ -56,11 +55,14 @@ class WeixinPay
 	 */
 	public function getSign($par)
 	{
-		var_dump($par);exit();
 		$temp = array_filter($par);
 		$temp = ksort($temp);
 		var_dump($temp);
 		$temp = http_build_query($temp);
+		$stringSignTemp = "";
+		$stringSignTemp=$temp."&key=".$_ENV['WEIXIN_MCH_SECRET'];
+		$stringSignTemp=MD5($stringSignTemp).toUpperCase();
+		return $stringSignTemp;
 	}
 
 	/**
