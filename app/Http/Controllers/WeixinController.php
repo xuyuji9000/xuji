@@ -13,6 +13,7 @@ use App\MyLib\WeixinApi;
 use App\MyLib\RedisFun;
 use App\MyLib\CacheKey;
 use App\MyLib\WeixinAuth;
+use App\MyLib\WeixinPay;
 
 use App\Fan;
 
@@ -409,5 +410,14 @@ class WeixinController extends Controller
             RedisFun::setArrayValue($key, $data);
             return false;
         }
+    }
+
+    /**
+     * 微信支付
+     */
+    public function payment()
+    {
+        $wxpay = new WeixinPay();
+        $wxpay->unifiedorder();
     }
 }
