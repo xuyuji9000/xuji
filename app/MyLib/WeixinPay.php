@@ -56,6 +56,7 @@ class WeixinPay
 	 */
 	public function getSign($par)
 	{
+		var_dump($par);exit();
 		$temp = array_filter($par);
 		$temp = ksort($temp);
 		var_dump($temp);
