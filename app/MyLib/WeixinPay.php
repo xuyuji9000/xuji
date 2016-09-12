@@ -30,7 +30,7 @@ class WeixinPay
 
 
 		$par['sign'] = $this->getSign($par);
-
+		var_dump($par['sign']);
         $payTpl =  "<xml>
 					   <appid><![CDATA[%s]]></appid>
 					   <mch_id><![CDATA[%s]]></mch_id>
