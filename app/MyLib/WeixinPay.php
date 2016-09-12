@@ -61,7 +61,7 @@ class WeixinPay
 		$temp = http_build_query($temp);
 		$stringSignTemp = "";
 		$stringSignTemp=$temp."&key=".$_ENV['WEIXIN_MCH_SECRET'];
-		$stringSignTemp=MD5($stringSignTemp).toUpperCase();
+		$stringSignTemp=strtoupper(MD5($stringSignTemp));
 		return $stringSignTemp;
 	}
 
