@@ -44,6 +44,11 @@ Route::get("test/getdetail", "TestController@getdetail");
 Route::get("test/sdk", "TestController@sdk");
 Route::get("test/payment", "TestController@payment");
 
+/**
+ * 微信支付
+ */
+Route::get("pay/payment", "WeixinPay@unifiedorder");	//	统一下单，支付回调
+
 
 
 
