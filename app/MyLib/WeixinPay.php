@@ -10,7 +10,7 @@ use App\MyLib\WeixinTool;
 class WeixinPay
 {
 	private $base_url = "https://api.mch.weixin.qq.com/"; //unified order basic url
-	private var $parameters;	//请求参数，类型为关联数组
+	private $parameters;	//请求参数，类型为关联数组
 
 	/**
 	 * 	作用：设置请求参数
