@@ -48,7 +48,7 @@ class WeixinPay
         $result = vsprintf($payTpl, $par);
         var_dump($payTpl);
         var_dump($par);
-        var_dump($result)；
+        var_dump($result);
         $result =  WeixinApi::sub_curl($this->base_url, $result);
 	}
 
