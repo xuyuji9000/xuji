@@ -53,7 +53,7 @@ class WeixinTool
 	/**
 	 * 	作用：生成签名
 	 */
-	public function getSign($Obj)
+	static public function getSign($Obj)
 	{
 		foreach ($Obj as $k => $v)
 		{
