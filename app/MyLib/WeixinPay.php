@@ -3,12 +3,22 @@ namespace App\MyLib;
 
 
 use App\MyLib\WeixinApi;
+use App\MyLib\WeixinTool;
 /**
 * 微信支付
 */
 class WeixinPay
 {
 	private $base_url = "https://api.mch.weixin.qq.com/"; //unified order basic url
+	private var $parameters;	//请求参数，类型为关联数组
+
+	/**
+	 * 	作用：设置请求参数
+	 */
+	function setParameter($parameter, $parameterValue)
+	{
+		$this->parameters[$this->trimString($parameter)] = $this->trimString($parameterValue);
+	}
 
 	/**
 	 * 统一下单
@@ -29,43 +39,45 @@ class WeixinPay
 		$par['product_id'] = 123;
 
 
-		$par['sign'] = $this->getSign($par);
+		$par['sign'] = WeixinTool::getSign($par);
+		$xml = WeixinTool::arrayToXml($par);
 		// var_dump($par['sign']);
-        $payTpl =  "<xml>
-					   <appid><![CDATA[%s]]></appid>
-					   <mch_id><![CDATA[%s]]></mch_id>
-					   <nonce_str><![CDATA[%s]]></nonce_str>
-					   <body><![CDATA[%s]]></body>
-					   <out_trade_no><![CDATA[%s]]></out_trade_no>
-					   <total_fee><![CDATA[%d]]></total_fee>
-					   <spbill_create_ip><![CDATA[%s]]></spbill_create_ip>
-					   <notify_url><![CDATA[%s]]></notify_url>
-					   <trade_type><![CDATA[%s]]></trade_type>
-					   <product_id><![CDATA[%s]]></product_id>
-					   <sign><![CDATA[%s]]></sign>
-					</xml>";
-		$result = "";
-        $result = vsprintf($payTpl, $par);
+  //       $payTpl =  "<xml>
+		// 			   <appid><![CDATA[%s]]></appid>
+		// 			   <mch_id><![CDATA[%s]]></mch_id>
+		// 			   <nonce_str><![CDATA[%s]]></nonce_str>
+		// 			   <body><![CDATA[%s]]></body>
+		// 			   <out_trade_no><![CDATA[%s]]></out_trade_no>
+		// 			   <total_fee><![CDATA[%d]]></total_fee>
+		// 			   <spbill_create_ip><![CDATA[%s]]></spbill_create_ip>
+		// 			   <notify_url><![CDATA[%s]]></notify_url>
+		// 			   <trade_type><![CDATA[%s]]></trade_type>
+		// 			   <product_id><![CDATA[%s]]></product_id>
+		// 			   <sign><![CDATA[%s]]></sign>
+		// 			</xml>";
+		// $result = "";
+        // $result = vsprintf($payTpl, $par);
         // var_dump($payTpl);
         // var_dump($par);
         // var_dump($result);
-        $result =  WeixinApi::sub_curl($this->base_url, $result);
+        $result =  WeixinApi::sub_curl($this->base_url, $xml);
+        return $result;
 	}
 
 	/**
 	 * 获得签名
 	 */
-	public function getSign($par)
-	{
-		$temp = array_filter($par);
-		ksort($temp);
-		var_dump($temp);
-		$temp = http_build_query($temp);
-		$stringSignTemp = "";
-		$stringSignTemp=$temp."&key=".$_ENV['WEIXIN_MCH_SECRET'];
-		$stringSignTemp=strtoupper(MD5($stringSignTemp));
-		return $stringSignTemp;
-	}
+	// public function getSign($par)
+	// {
+	// 	$temp = array_filter($par);
+	// 	ksort($temp);
+	// 	var_dump($temp);
+	// 	$temp = http_build_query($temp);
+	// 	$stringSignTemp = "";
+	// 	$stringSignTemp=$temp."&key=".$_ENV['WEIXIN_MCH_SECRET'];
+	// 	$stringSignTemp=strtoupper(MD5($stringSignTemp));
+	// 	return $stringSignTemp;
+	// }
 
 	/**
 	 * 创建随机字符串
