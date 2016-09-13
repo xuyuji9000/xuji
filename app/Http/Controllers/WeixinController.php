@@ -418,6 +418,8 @@ class WeixinController extends Controller
     public function payment()
     {
         $wxpay = new WeixinPay();
-        $wxpay->unifiedorder();
+        $result = "";
+        $result = $wxpay->unifiedorder();
+        var_dump($result);
     }
 }
