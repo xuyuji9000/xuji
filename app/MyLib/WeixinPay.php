@@ -9,7 +9,7 @@ use App\MyLib\WeixinTool;
 */
 class WeixinPay
 {
-	private $base_url = "https://api.mch.weixin.qq.com/"; //unified order basic url
+	private $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 	private $parameters;	//请求参数，类型为关联数组
 
 	/**
@@ -60,7 +60,7 @@ class WeixinPay
         // var_dump($payTpl);
         // var_dump($par);
         // var_dump($result);
-        $result =  WeixinApi::sub_curl($this->base_url, $xml);
+        $result =  WeixinApi::sub_curl($this->url, $xml);
         return $result;
 	}
 
