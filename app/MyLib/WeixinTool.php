@@ -29,7 +29,7 @@ class WeixinTool
 	/**
 	 * 	作用：格式化参数，签名过程需要使用
 	 */
-	function formatBizQueryParaMap($paraMap, $urlencode)
+	static function formatBizQueryParaMap($paraMap, $urlencode)
 	{
 		$buff = "";
 		ksort($paraMap);
@@ -61,7 +61,7 @@ class WeixinTool
 		}
 		//签名步骤一：按字典序排序参数
 		ksort($Parameters);
-		$String = $this->formatBizQueryParaMap($Parameters, false);
+		$String = self::formatBizQueryParaMap($Parameters, false);
 		//echo '【string1】'.$String.'</br>';
 		//签名步骤二：在string后加入KEY
 		$String = $String."&key=".$_ENV['WEIXIN_MCH_SECRET'];
