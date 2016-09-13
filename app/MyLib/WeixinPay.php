@@ -30,7 +30,7 @@ class WeixinPay
 
 
 		$par['sign'] = $this->getSign($par);
-		var_dump($par['sign']);
+		// var_dump($par['sign']);
         $payTpl =  "<xml>
 					   <appid><![CDATA[%s]]></appid>
 					   <mch_id><![CDATA[%s]]></mch_id>
@@ -46,9 +46,9 @@ class WeixinPay
 					</xml>";
 		$result = "";
         $result = vsprintf($payTpl, $par);
-        var_dump($payTpl);
-        var_dump($par);
-        var_dump($result);
+        // var_dump($payTpl);
+        // var_dump($par);
+        // var_dump($result);
         $result =  WeixinApi::sub_curl($this->base_url, $result);
 	}
 
