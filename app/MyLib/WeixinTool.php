@@ -27,6 +27,17 @@ class WeixinTool
 	}
 
 	/**
+	 * 将xml格式转换成数组格式
+	 */
+	static public function xmlToArray($xml)
+	{
+        libxml_disable_entity_loader(true);
+		$obj = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+		$array =  (array) $obj;
+		return $array;
+	}
+
+	/**
 	 * 	作用：格式化参数，签名过程需要使用
 	 */
 	static function formatBizQueryParaMap($paraMap, $urlencode)

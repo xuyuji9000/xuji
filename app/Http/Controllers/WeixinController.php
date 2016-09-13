@@ -14,6 +14,7 @@ use App\MyLib\RedisFun;
 use App\MyLib\CacheKey;
 use App\MyLib\WeixinAuth;
 use App\MyLib\WeixinPay;
+use App\MyLib\WeixinTool;
 
 use App\Fan;
 
@@ -420,6 +421,6 @@ class WeixinController extends Controller
         $wxpay = new WeixinPay();
         $result = "";
         $result = $wxpay->unifiedorder();
-        var_dump($result);
+        var_dump(WeixinTool::xmlToArray($result));
     }
 }
