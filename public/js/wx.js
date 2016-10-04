@@ -25,9 +25,7 @@ wx.ready(function(){
 
 wx.error(function(res){
     var retval = '';
-    
     for(p in res) {
         document.write("[\""+p+"\"]="+res[p]+"\n");
     }
-   
 })

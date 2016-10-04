@@ -1,5 +1,5 @@
 <?php
-namespace App\MyLib;
+namespace App\MyLib\Wechat;
 
 /**
 * 微信通用工具
@@ -16,14 +16,14 @@ class WeixinTool
         {
         	 if (is_numeric($val))
         	 {
-        	 	$xml.="<".$key.">".$val."</".$key.">"; 
+        	 	$xml.="<".$key.">".$val."</".$key.">";
 
         	 }
         	 else
-        	 	$xml.="<".$key."><![CDATA[".$val."]]></".$key.">";  
+        	 	$xml.="<".$key."><![CDATA[".$val."]]></".$key.">";
         }
         $xml.="</xml>";
-        return $xml; 
+        return $xml;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class WeixinTool
 			$buff .= $k . "=" . $v . "&";
 		}
 		$reqPar;
-		if (strlen($buff) > 0) 
+		if (strlen($buff) > 0)
 		{
 			$reqPar = substr($buff, 0, strlen($buff)-1);
 		}

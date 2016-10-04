@@ -9,15 +9,16 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\MyLib\WeixinApi;
-use App\MyLib\RedisFun;
-use App\MyLib\CacheKey;
-use App\MyLib\WeixinAuth;
-use App\MyLib\WeixinPay;
-use App\MyLib\WeixinTool;
+use App\MyLib\Wechat\WeixinApi;
+use App\MyLib\Wechat\RedisFun;
+use App\MyLib\Wechat\CacheKey;
+use App\MyLib\Wechat\WeixinAuth;
+use App\MyLib\Wechat\WeixinPay;
+use App\MyLib\Wechat\WeixinTool;
 
 use App\Fan;
 
+use Illuminate\Support\Facades\View;
 
 define("TOKEN", "xujijiguangxuxuewen123");
 
@@ -384,7 +385,6 @@ class WeixinController extends Controller
             if(!$result)
                 Log::info("添加粉丝失败.");
         }
-            
     }
 
     /**
@@ -393,7 +393,7 @@ class WeixinController extends Controller
      * @return boolean          是否重复
      * @createtime  2016/06/06 周一
      */
-    private function isDuplicate($postObj) 
+    private function isDuplicate($postObj)
     {
         $needle = $postObj->FromUserName.$postObj->CreateTime;
         $key = CacheKey::get_is_duplicate_key();
@@ -414,13 +414,19 @@ class WeixinController extends Controller
     }
 
     /**
-     * 微信支付
+     * 预支付交易
      */
     public function payment()
     {
+        $data = array();
+
         $wxpay = new WeixinPay();
-        $result = "";
-        $result = $wxpay->unifiedorder();
-        var_dump(WeixinTool::xmlToArray($result));
+        $data['qrcode'] = $wxpay->getQRCode();
+//        echo $data['qrcode'];
+//        dd($data);
+        return view('weixin.payment', $data);
+//        if(View::exists('weixin.payment')) {
+//            echo "string";
+//        }
     }
 }

@@ -100,7 +100,7 @@ class TestController extends Controller
     // 获取详细信息
     public function getdetail()
     {
-        if($_GET['code']) 
+        if($_GET['code'])
         {
             $data = WeixinAuth::getOpenid($_GET['code']);
             $info = WeixinAuth::getDetailInfo($data);
@@ -108,21 +108,5 @@ class TestController extends Controller
         } else {
             echo false;
         }
-    }
-
-    /**
-     * check sdk 
-     */
-    public function sdk()
-    {
-        
-    }
-
-    /**
-     * payment demo
-     */
-    public function payment()
-    {
-        return view('test.payment');
     }
 }
