@@ -36,7 +36,7 @@ class FunctionController extends Controller
 
     public function uploadImg(Request $request) {
       $Picture = new Picture();
-      $data["id"] = $Picture->upload_file($request->file("imgfile")->getRealPath());
+      $data["id"] = $Picture->uploadFile($request->file("imgfile")->getRealPath());
       // $data = array();
       // Storage::put('test.jpg', file_get_contents($request->file("imgfile")->getRealPath()));
       // $url = Storage::url('test.jpg');
