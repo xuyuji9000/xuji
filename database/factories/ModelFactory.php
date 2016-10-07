@@ -22,7 +22,8 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define('App\Good', function (Faker\Generator $faker) {
     return [
-        'good_picture' => rand(1,20),
+        'good_picture' => 24,
+        'title' => 'An avocado',
         'qr_code' => rand(1,20),
         'price' => str_random(10).'@gmail.com',
         'description' => str_random(100),
