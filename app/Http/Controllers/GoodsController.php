@@ -16,4 +16,8 @@ class GoodsController extends Controller
 
         return view("goods.list", ['goods'=>$goods]);
     }
+
+    public function item($id) {
+        echo $id;
+    }
 }
