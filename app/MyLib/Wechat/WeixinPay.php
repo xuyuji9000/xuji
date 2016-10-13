@@ -5,6 +5,7 @@ namespace App\MyLib\Wechat;
 use App\MyLib\Wechat\WeixinApi;
 use App\MyLib\Wechat\WeixinTool;
 
+use App\Picture;
 use \Milon\Barcode\DNS2D;
 /**
 * 微信支付
@@ -74,7 +75,7 @@ class WeixinPay
     public function getQRCode()
     {
         $qrcode  = new DNS2D();
-        return $qrcode->getBarcodeHTML( $this->unifiedOrder()['code_url'], "QRCODE");
+        return $this->storeQRCode($qrcode->getBarcodePNGPath( $this->unifiedOrder()['code_url'], "QRCODE"));
     }
 
     /**
@@ -95,5 +96,16 @@ class WeixinPay
         $par['product_id'] = 123;
         $par['sign'] = WeixinTool::getSign($par);
         return $par;
+    }
+
+    /**
+     * @param $path
+     * @return mixed
+     */
+    private function storeQRCode($path)
+    {
+        $picture = new Picture();
+        $id = $picture->uploadFile($path);
+        return !$id ? false : $id;
     }
 }
