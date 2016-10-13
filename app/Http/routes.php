@@ -50,8 +50,11 @@ Route::get("test/payment", "TestController@payment");
 Route::get("pay/payment", "WeixinController@payment");	//	预支付
 Route::get("pay/callback", "WeixinController@callback");	//	预支付回调
 
-
-
+/**
+ * Goods
+ */
+Route::get("goods/list", "GoodsController@list");   // get goods list
+Route::get("goods/{id}", "GoodsController@item")->where('id', '[0-9]+');    // get specific goods
 
 // images
 Route::get("img/{path}", function(League\Glide\Server $server, $path){

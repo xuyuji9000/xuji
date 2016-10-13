@@ -39,7 +39,7 @@ class Picture extends Model
     /**
      * @return string
      */
-    private function getImageBasePath()
+    private static function getImageBasePath()
     {
     	return '/'.env("IMAGE_PATH");
     }
@@ -50,14 +50,14 @@ class Picture extends Model
 	 */
     public function getImageURL($org_path='') {
     	$org_path = $org_path?$org_path:$this->org;
-    	return URL::to('/').$this->getImageBasePath().$org_path;
+    	return URL::to('/'). Picture::getImageBasePath() .$org_path;
     }
 
     /**
      * @return string
      */
     public function getLocalImage(){
-    	return public_path().$this->getImageBasePath().$this->org;
+    	return public_path(). Picture::getImageBasePath() .$this->org;
     }
 
     /**
@@ -67,7 +67,18 @@ class Picture extends Model
     function getElementById($id){
         if(!($result = Picture::find($id)))
             return false;
-        $result['org'] = $this->getImageBasePath().$result['org'];
+        $result['org'] = Picture::getImageBasePath() .$result['org'];
         return $result;
+    }
+
+
+    /**
+     * @param $id
+     * @return bool|string
+     */
+    public static function getPathById($id) {
+        if(!($result = Picture::find($id)))
+            return false;
+        return $result = Picture::getImageBasePath() .$result['org'];
     }
 }
