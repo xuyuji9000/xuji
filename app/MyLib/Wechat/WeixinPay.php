@@ -75,7 +75,8 @@ class WeixinPay
     public function getQRCode()
     {
         $qrcode  = new DNS2D();
-        return $this->storeQRCode($qrcode->getBarcodePNGPath( $this->unifiedOrder()['code_url'], "QRCODE"));
+        $qrcode->getBarcodePNGPath( $this->unifiedOrder()['code_url'], "QRCODE");
+        // return $this->storeQRCode($qrcode->getBarcodePNGPath( $this->unifiedOrder()['code_url'], "QRCODE"));
     }
 
     /**
