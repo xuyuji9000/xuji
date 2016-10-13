@@ -11,8 +11,6 @@
     div.qrcode{margin: 0 auto;}
 </style>
 <body>
-{{--{!! Html::image($qrcode) !!}--}}
-    <div class="qrcode"></div>
-
+    <div class="qrcode">{!! $qrcode !!}</div>
 </body>
 </html>

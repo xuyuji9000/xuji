@@ -422,6 +422,11 @@ class WeixinController extends Controller
 
         $wxpay = new WeixinPay();
         $data['qrcode'] = $wxpay->getQRCode();
+//        echo $data['qrcode'];
+//        dd($data);
         return view('weixin.payment', $data);
+//        if(View::exists('weixin.payment')) {
+//            echo "string";
+//        }
     }
 }
