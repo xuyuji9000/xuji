@@ -16,7 +16,7 @@ class Picture extends Model
         'org'
     ];
 
-    public static $imageBasePath = '/'.env("IMAGE_PATH");
+    static $imageBasePath = '/'.env("IMAGE_PATH");
 
 
 
