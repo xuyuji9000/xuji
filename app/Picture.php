@@ -16,11 +16,6 @@ class Picture extends Model
         'org'
     ];
 
-    static $imageBasePath = '/'.env("IMAGE_PATH");
-
-
-
-
     /**
 	 *	$file_name : 表单中file的name属性
 	 *	返回值：数组   array("org"=>org/1/b9/e73/64e7/4bd979d19b34918fc277f8.jpg, "id=>"1")
@@ -53,14 +48,14 @@ class Picture extends Model
 	 */
     public function getImageURL($org_path='') {
     	$org_path = $org_path?$org_path:$this->org;
-    	return URL::to('/').self::$imageBasePath.$org_path;
+    	return URL::to('/').'/'.env("IMAGE_PATH").$org_path;
     }
 
     /**
      * @return string
      */
     public function getLocalImage(){
-    	return public_path().self::$imageBasePath.$this->org;
+    	return public_path().'/'.env("IMAGE_PATH").$this->org;
     }
 
     /**
@@ -70,7 +65,7 @@ class Picture extends Model
     function getElementById($id){
         if(!($result = Picture::find($id)))
             return false;
-        $result['org'] = self::$imageBasePath.$result['org'];
+        $result['org'] = '/'.env("IMAGE_PATH").$result['org'];
         return $result;
     }
 
