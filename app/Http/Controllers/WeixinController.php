@@ -414,10 +414,6 @@ class WeixinController extends Controller
      */
     public function payment()
     {
-        $data = array();
-
-        $wxpay = new WeixinPay();
-        $data['qrcode'] = $wxpay->getQRCode();
         return view('weixin.payment', $data);
     }
 }
