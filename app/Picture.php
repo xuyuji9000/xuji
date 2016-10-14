@@ -62,7 +62,7 @@ class Picture extends Model
      * @param $id
      * @return bool
      */
-    function getElementById($id){
+    public static function getElementById($id){
         if(!($result = Picture::find($id)))
             return false;
         $result['org'] = '/'.env("IMAGE_PATH").$result['org'];
