@@ -11,7 +11,6 @@
             </div>
 
             @foreach ($goods as $good)
-                {{ App\Picture::$imageBasePath }}
                 <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                     <a class="thumbnail" href="#">
                         <img class="img-responsive" src="{{ App\Picture::getElementById($good['good_picture']) }}" alt="{{ $good['title'] }}" title="{{ $good['title'] }}">
