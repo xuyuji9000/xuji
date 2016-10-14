@@ -24,10 +24,6 @@ define("TOKEN", "xujijiguangxuxuewen123");
 
 class WeixinController extends Controller
 {
-    //public function __construct() {
-    //    $this->middleware('web');    
-    //}
-
     public function test(Request $request) {
         $url = WeixinAuth::getAuthUrl('http://xuji.yogiman.cn/weixin/test2', 'snsapi_userinfo');
         header("Location:".$url);
@@ -422,11 +418,6 @@ class WeixinController extends Controller
 
         $wxpay = new WeixinPay();
         $data['qrcode'] = $wxpay->getQRCode();
-//        echo $data['qrcode'];
-//        dd($data);
         return view('weixin.payment', $data);
-//        if(View::exists('weixin.payment')) {
-//            echo "string";
-//        }
     }
 }
