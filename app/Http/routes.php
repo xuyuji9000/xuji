@@ -61,6 +61,9 @@ Route::get("img/{path}", function(League\Glide\Server $server, $path){
 	$server->outputImage( $path, $_GET);
 });
 
+// portfolio
+Route::get("portfolio/payment", "PortfolioController@payment");
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
