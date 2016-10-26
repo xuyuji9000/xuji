@@ -10,8 +10,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\MyLib\Wechat\WeixinApi;
-use App\MyLib\Wechat\RedisFun;
-use App\MyLib\Wechat\CacheKey;
+use App\MyLib\RedisFun;
+use App\MyLib\CacheKey;
 use App\MyLib\Wechat\WeixinAuth;
 use App\MyLib\Wechat\WeixinPay;
 use App\MyLib\Wechat\WeixinTool;
