@@ -1,6 +1,5 @@
 <?php
-
-namespace App\MyLib;
+namespace App\MyLib\Wechat;
 
 use App\MyLib\RedisFun;
 use App\Picture;

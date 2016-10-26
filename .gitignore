@@ -1,9 +1,11 @@
 /vendor
 /node_modules
 /public/images
+/public/*.png
 Homestead.yaml
 Homestead.json
 .env
 php.tags
 tags
 .gitignore
+.idea/workspace.xml
